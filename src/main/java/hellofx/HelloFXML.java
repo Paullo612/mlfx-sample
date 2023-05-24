@@ -26,8 +26,9 @@
  */
 package hellofx;
 
+import io.github.paullo612.mlfx.api.CompileFXML;
+import io.github.paullo612.mlfx.api.MLFXLoader;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -35,11 +36,18 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
+// Compile fxml files in src/main/resources/hellofx
+//  Typically @CompileFXML should be specified only once on your app's Application class.
+@CompileFXML(fxmlDirectories = "/hellofx")
 public class HelloFXML extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        AnchorPane root = FXMLLoader.load(HelloFXML.class.getResource("hello.fxml"),
+        // Replace FXMLLoader with MLFXLoader
+
+        // AnchorPane root = FXMLLoader.load(HelloFXML.class.getResource("hello.fxml"),
+        //        ResourceBundle.getBundle("hellofx.hello"));
+        AnchorPane root = MLFXLoader.load(HelloFXML.class.getResource("hello.fxml"),
                 ResourceBundle.getBundle("hellofx.hello"));
         Scene scene = new Scene(root, 640, 480);
         stage.setScene(scene);

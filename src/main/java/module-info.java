@@ -25,10 +25,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 module hellofxml {
-    requires javafx.controls;
-    requires javafx.fxml;
+    // Add requirements.
+    requires io.micronaut.core;
+    requires io.micronaut.inject;
+    requires io.github.paullo612.mlfx.api.core;
 
-    opens hellofx to javafx.fxml;
+    requires javafx.controls;
+    // javafx.fxml is not required at runtime anymore...
+    // requires javafx.fxml;
+
+    // ...Only at compile time.
+    requires static javafx.fxml;
+
+    // We do not depend on javafx.fxml at runtime, so, open is also not needed anymore.
+    // opens hellofx to javafx.fxml;
 
     exports hellofx;
 }

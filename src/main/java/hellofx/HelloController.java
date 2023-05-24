@@ -34,15 +34,21 @@ import java.util.ResourceBundle;
 
 public class HelloController {
 
+    // Micronaut cannot inject private fields without reflections, so, make fields package-private. Micronaut's DI won't
+    //  even be used in this case. Fields would be set directly by generated code, as controller and fxml file both are
+    //  in the same package from JVM point of view. You can decompile | hellofx.$Hello$CompiledFXMLLoader | from
+    //  target/classes/hellofx directory and see what it does. It's a decompiler fair use!
     @FXML
-    private Button button;
+    /* private */ Button button;
 
     @FXML
-    private Label label;
+    /* private */ Label label;
 
     @FXML
-    private ResourceBundle resources;
+    /* private */ ResourceBundle resources;
 
+    // This one is public, so, @FXML annotation is not needed. mlfx issues a warning if public method or field is
+    //  annotated with @FXML.
     public void initialize() {
         button.setOnAction(e -> {
             label.setText(resources.getString("label.text") + " " + System.getProperty("javafx.version"));

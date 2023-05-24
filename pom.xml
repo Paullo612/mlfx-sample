@@ -17,6 +17,7 @@
         <gluonfx.maven.plugin.version>1.0.18</gluonfx.maven.plugin.version>
         <gluonfx.target>host</gluonfx.target>
         <main.class>hellofx.HelloFXML</main.class>
+        <micronaut.version>3.4.0</micronaut.version>
     </properties>
 
     <dependencies>
@@ -25,10 +26,19 @@
             <artifactId>javafx-controls</artifactId>
             <version>${javafx.version}</version>
         </dependency>
-	<dependency>
+        <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
+            <!-- javafx-fxml is not required at runtime anymore-->
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Add API dependency -->
+        <dependency>
+            <groupId>io.github.paullo612.mlfx.api</groupId>
+            <artifactId>micronaut</artifactId>
+            <version>0.6.1</version>
         </dependency>
     </dependencies>
 
@@ -38,6 +48,30 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
+
+                <configuration>
+                    <!-- Incremental compilation is completely broken in mlfx, so, recompile whole module on any
+                         change in fxml files. -->
+                    <fileExtensions>
+                        <fileExtension>class</fileExtension>
+                        <fileExtension>jar</fileExtension>
+                        <fileExtension>fxml</fileExtension>
+                    </fileExtensions>
+
+                    <!-- Configure annotation processors -->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>io.micronaut</groupId>
+                            <artifactId>micronaut-inject-java</artifactId>
+                            <version>${micronaut.version}</version>
+                        </path>
+                        <path>
+                            <groupId>io.github.paullo612.mlfx.compiler</groupId>
+                            <artifactId>micronaut</artifactId>
+                            <version>0.6.1</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
             </plugin>
 
             <plugin>
@@ -59,9 +93,10 @@
                     <bundlesList>
                         <list>hellofx.hello</list>
                     </bundlesList>
-                    <reflectionList>
+                    <!-- Reflection list is not needed anymore! -->
+                    <!-- <reflectionList>
                         <list>hellofx.HelloController</list>
-                    </reflectionList>
+                    </reflectionList> -->
                 </configuration>
             </plugin>
         </plugins>
